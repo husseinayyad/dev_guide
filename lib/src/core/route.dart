@@ -1,4 +1,6 @@
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/presentation/pages/login/login.dart';
+import 'package:dev_guide/src/presentation/pages/signUp/sign_up.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/pages/mainPage/mainPage.dart';
@@ -40,6 +42,17 @@ class Routes {
           pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
               const MainPage(),
         );
+      case RoutesName.login:
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
+          const LoginPage(),
+        );
+      case RoutesName.signUp:
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
+          const SignUpPage(),
+        );
+
 
       default:
         return PageRouteBuilder<dynamic>(

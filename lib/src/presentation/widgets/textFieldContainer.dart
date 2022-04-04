@@ -1,3 +1,4 @@
+import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
 import 'package:flutter/material.dart';
 
@@ -19,7 +20,7 @@ class TextFieldContainer extends StatelessWidget {
       decoration: BoxDecoration(
           // color: Theme.of(context).backgroundColor,
           borderRadius: BorderRadius.circular(10),
-          color: Theme.of(context).backgroundColor),
+          color:ColorManager.white),
       child: child,
     );
   }

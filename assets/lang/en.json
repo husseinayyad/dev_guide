@@ -57,5 +57,12 @@
   "settings": "Settings",
   "noResultsFound": "No Results Found",
   "favorites": "Favorites",
-  "categories": "Categories"
+  "categories": "Categories",
+  "signIn": "Sign In",
+  "signUp": "Sign Up",
+  "forgetPassword?": "Forget Password?",
+  "don'tHaveAnAccount?": "Don't have an account?",
+  "skip": "Skip",
+  "alreadyHaveAnAccount?": "Already Have An Account?",
+  "terms": "by continuing, you agree to accept our \nprivacy policy & terms of service."
 }

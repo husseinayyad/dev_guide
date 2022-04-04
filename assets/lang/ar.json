@@ -58,5 +58,12 @@
   "settings": "الإعدادات",
   "noResultsFound": "لم يتم العثور على نتائج",
   "favorites": "المفضلة",
-  "categories": "الاصناف"
+  "categories": "الاصناف",
+  "signIn": "تسجيل دخول",
+  "signUp": "تسجيل حساب",
+  "forgetPassword?": "نسيت كلمة المرور؟",
+  "don'tHaveAnAccount?": "ليس لديك حساب؟",
+  "skip": "تخطي",
+  "alreadyHaveAnAccount?": "هل لديك حساب؟",
+  "terms": "بالمتابعة ، فإنك توافق على قبول\nسياسة الخصوصية وشروط الخدمة."
 }
