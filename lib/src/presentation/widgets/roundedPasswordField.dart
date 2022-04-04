@@ -1,4 +1,5 @@
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
+import 'package:dev_guide/src/presentation/widgets/textFieldContainer.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/valuesManager.dart';
@@ -31,32 +32,34 @@ class _RoundedPasswordFieldState extends State<RoundedPasswordField> {
     _theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(AppPadding.p8),
-      child: TextFormField(
-        obscureText: _showPassword ? false : true,
-        onChanged: widget.onChanged,
-        cursorColor: _theme.primaryColor,
-        validator: widget.validator,
-        style: const TextStyle(color: Colors.black, fontSize: FontSize.s14),
-        decoration: InputDecoration(
-          labelText: widget.hintText,
-          // prefixIcon: widget.icon!=null?Icon(
-          //   widget.icon,
-          //   color: _theme.primaryColor,
-          //   size: 22.sp,
-          // ):const Text(""),
-          suffixIcon: InkWell(
-            onTap: () {
-              setState(() {
-                if (_showPassword) {
-                  _showPassword = false;
-                } else {
-                  _showPassword = true;
-                }
-              });
-            },
-            child: Icon(
-              Icons.visibility,
-              color: _theme.primaryColor,
+      child: TextFieldContainer(
+        child: TextFormField(
+          obscureText: _showPassword ? false : true,
+          onChanged: widget.onChanged,
+          cursorColor: _theme.primaryColor,
+          validator: widget.validator,
+          style: const TextStyle(color: Colors.black, fontSize: FontSize.s14),
+          decoration: InputDecoration(
+            labelText: widget.hintText,
+            // prefixIcon: widget.icon!=null?Icon(
+            //   widget.icon,
+            //   color: _theme.primaryColor,
+            //   size: 22.sp,
+            // ):const Text(""),
+            suffixIcon: InkWell(
+              onTap: () {
+                setState(() {
+                  if (_showPassword) {
+                    _showPassword = false;
+                  } else {
+                    _showPassword = true;
+                  }
+                });
+              },
+              child: Icon(
+                Icons.visibility,
+                color: _theme.primaryColor,
+              ),
             ),
           ),
         ),

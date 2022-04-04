@@ -1,8 +1,8 @@
 import 'dart:ui';
 
-import '../../data/network/apiObject.dart';
 
-class User extends ApiObject<User> {
+
+class User  {
   User(
       {this.userId,
 
@@ -38,12 +38,10 @@ class User extends ApiObject<User> {
     return hashValues(userId.hashCode, userId.hashCode);
   }
 
-  @override
   String? getPrimaryKey() {
     return userId;
   }
 
-  @override
   User fromMap(dynamic dynamicData) {
 
     return User(
@@ -64,7 +62,6 @@ class User extends ApiObject<User> {
   }
 
 
-  @override
   Map<String, dynamic> toMap(User object) {
 
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -84,29 +81,21 @@ class User extends ApiObject<User> {
 
   }
 
-  @override
   List<User> fromMapList(List<dynamic> dynamicDataList) {
     final List<User> subUserList = <User>[];
 
-    if (dynamicDataList != null) {
-      for (dynamic dynamicData in dynamicDataList) {
-        if (dynamicData != null) {
-          subUserList.add(fromMap(dynamicData));
-        }
+    for (dynamic dynamicData in dynamicDataList) {
+      if (dynamicData != null) {
+        subUserList.add(fromMap(dynamicData));
       }
     }
     return subUserList;
   }
 
-  @override
   List<Map<String, dynamic>> toMapList(List<User> objectList) {
     final List<Map<String, dynamic>> mapList = <Map<String, dynamic>>[];
-    if (objectList != null) {
-      for (User data in objectList) {
-        if (data != null) {
-          mapList.add(toMap(data));
-        }
-      }
+    for (User data in objectList) {
+      mapList.add(toMap(data));
     }
 
     return mapList;
