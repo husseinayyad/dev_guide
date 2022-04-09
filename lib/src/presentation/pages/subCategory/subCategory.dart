@@ -18,7 +18,7 @@ class SubCategoryPage extends StatefulWidget {
 }
 
 class _SubCategoryPageState extends State<SubCategoryPage>
-    with AutomaticKeepAliveClientMixin {
+   {
   late double _width, _pixelRatio;
 
   late bool _xlarge;
@@ -70,7 +70,6 @@ class _SubCategoryPageState extends State<SubCategoryPage>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     _width = MediaQuery.of(context).size.width;
 
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -160,7 +159,5 @@ class _SubCategoryPageState extends State<SubCategoryPage>
     );
   }
 
-  @override
-  // TODO: implement wantKeepAlive
-  bool get wantKeepAlive => true;
+
 }

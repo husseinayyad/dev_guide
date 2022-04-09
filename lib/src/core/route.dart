@@ -1,8 +1,10 @@
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/presentation/pages/course/course.dart';
 import 'package:dev_guide/src/presentation/pages/courses/courses.dart';
 import 'package:dev_guide/src/presentation/pages/login/login.dart';
 import 'package:dev_guide/src/presentation/pages/signUp/sign_up.dart';
 import 'package:dev_guide/src/presentation/pages/subCategory/subCategory.dart';
+import 'package:dev_guide/src/presentation/pages/webView/webView.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/pages/mainPage/mainPage.dart';
@@ -66,6 +68,18 @@ class Routes {
         return PageRouteBuilder<dynamic>(
           pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
               CoursesPage(subCategory:args["subCategory"]),
+        );
+      case RoutesName.course:
+        final args = settings.arguments as Map;
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
+              CoursePage(course:args["course"]),
+        );
+      case RoutesName.webView:
+        final args = settings.arguments as Map;
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
+              WebLinkView(link:args["link"]),
         );
       default:
         return PageRouteBuilder<dynamic>(
