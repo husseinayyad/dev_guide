@@ -1,5 +1,6 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
+import 'package:dev_guide/src/presentation/pages/category/category.dart';
 import 'package:dev_guide/src/presentation/pages/home/home.dart';
 
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
@@ -21,7 +22,7 @@ class _MainPageState extends State<MainPage> {
 
   List<Widget> tabPages = [
     const HomePage(),
-    const Scaffold(),
+    const CategoryPage(),
     const Scaffold(),
     const Scaffold()
   ];

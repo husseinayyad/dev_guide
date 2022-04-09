@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin{
   late double _width, _pixelRatio;
 
   late bool _xlarge;
@@ -173,4 +173,8 @@ class _HomePageState extends State<HomePage> {
           itemCount: 4),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
