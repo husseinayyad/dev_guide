@@ -1,5 +1,6 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
+import 'package:dev_guide/src/presentation/pages/home/home.dart';
 
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
@@ -19,7 +20,7 @@ class _MainPageState extends State<MainPage> {
   late PageController _pageController;
 
   List<Widget> tabPages = [
-    const Scaffold(),
+    const HomePage(),
     const Scaffold(),
     const Scaffold(),
     const Scaffold()
