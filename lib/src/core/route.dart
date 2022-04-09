@@ -1,10 +1,13 @@
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/presentation/pages/courses/courses.dart';
 import 'package:dev_guide/src/presentation/pages/login/login.dart';
 import 'package:dev_guide/src/presentation/pages/signUp/sign_up.dart';
+import 'package:dev_guide/src/presentation/pages/subCategory/subCategory.dart';
 import 'package:flutter/material.dart';
 
 import '../presentation/pages/mainPage/mainPage.dart';
 import '../presentation/pages/splash/splash.dart';
+
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -52,8 +55,18 @@ class Routes {
           pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
           const SignUpPage(),
         );
-
-
+      case RoutesName.subCategory:
+        final args = settings.arguments as Map;
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
+           SubCategoryPage(category: args["category"]),
+        );
+      case RoutesName.courses:
+        final args = settings.arguments as Map;
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
+              CoursesPage(subCategory:args["subCategory"]),
+        );
       default:
         return PageRouteBuilder<dynamic>(
           pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
