@@ -64,5 +64,8 @@
   "don'tHaveAnAccount?": "Don't have an account?",
   "skip": "Skip",
   "alreadyHaveAnAccount?": "Already Have An Account?",
-  "terms": "by continuing, you agree to accept our \nprivacy policy & terms of service."
+  "terms": "by continuing, you agree to accept our \nprivacy policy & terms of service.",
+  "courses": "Courses",
+  "mostRecently": "Most Recently",
+  "popular": "Popular"
 }
