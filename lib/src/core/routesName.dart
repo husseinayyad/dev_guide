@@ -4,5 +4,7 @@ class RoutesName {
   static const mainPage = "/mainPage";
   static const login ="/login";
   static const signUp ="/signUp";
+  static const subCategory ="/subCategory";
+  static const courses ="/courses";
 
 }

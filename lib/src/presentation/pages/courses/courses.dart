@@ -1,117 +1,110 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
-import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
+import 'package:dev_guide/src/presentation/widgets/backIcon.dart';
 import 'package:dev_guide/src/presentation/widgets/imageView.dart';
 import 'package:flutter/material.dart';
 
-class CategoryPage extends StatefulWidget {
-  const CategoryPage({Key? key}) : super(key: key);
+class CoursesPage extends StatefulWidget {
+  const CoursesPage({Key? key, required this.subCategory}) : super(key: key);
+  final Map subCategory;
 
   @override
-  _CategoryPageState createState() => _CategoryPageState();
+  _CoursesPageState createState() => _CoursesPageState();
 }
 
-class _CategoryPageState extends State<CategoryPage>
+class _CoursesPageState extends State<CoursesPage>
     with AutomaticKeepAliveClientMixin {
   late double _width, _pixelRatio;
 
   late bool _xlarge;
   late ThemeData _theme;
-  final List<Map> _categoryDemoData = [
+  final List<Map> _coursesDemoData = [
     {
-      "name": "Development",
+      "name": "Html",
       "image":
           "https://cdn.icon-icons.com/icons2/2110/PNG/512/development_icon_131032.png",
       "state": ""
     },
     {
-      "name": "IT and Software",
+      "name": "CSS",
       "image":
           "https://cdn.icon-icons.com/icons2/1859/PNG/512/codinghtml_117947.png",
       "state": ""
     },
     {
-      "name": "Design",
+      "name": "Vue Js",
       "image":
           "https://cdn.icon-icons.com/icons2/664/PNG/512/construction_project_plan_building_architect_design_develop-62_icon-icons.com_60212.png",
-      "state": ""
-    },
-    {
-      "name": "E-Business",
-      "image":
-          "https://cdn.icon-icons.com/icons2/1153/PNG/512/1486564180-finance-financial-report_81493.png",
-      "state": ""
-    },
-    {
-      "name": "Marketing",
-      "image":
-          "https://cdn.icon-icons.com/icons2/1881/PNG/512/iconfinder-social-media-work-4341270_120574.png",
       "state": "Upcoming"
     },
-    {
-      "name": "Development",
-      "image":
-          "https://cdn.icon-icons.com/icons2/1537/PNG/512/1562687-code-computer-creative-html-process-technology-web-development_107058.png",
-      "state": "Upcoming"
-    },
-    {
-      "name": "Photography and Video",
-      "image":
-          "https://cdn.icon-icons.com/icons2/1461/PNG/512/2998131-camera-photo-photography_99870.png",
-      "state": "Upcoming"
-    }
+
   ];
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _width = MediaQuery.of(context).size.width;
 
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
 
     _xlarge = ResponsiveWidget.isScreenXLarge(_width, _pixelRatio);
     _theme = Theme.of(context);
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(AppPadding.p12),
-          child: Text(
-            AppLocalizations.of(context)!.translate("category")!,
-            style: _theme.textTheme.headline5,
-          ),
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: AppSize.s16,
+            ),
+            Row(
+              children: [
+                const Padding(
+                  padding: EdgeInsets.all(AppPadding.p8),
+                  child: BackIcon(),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(AppPadding.p12),
+                  child: Text(
+                    widget.subCategory["name"],
+                    style: _theme.textTheme.headline5,
+                  ),
+                ),
+              ],
+            ),
+            _coursesView()
+          ],
         ),
-        _categoryView()
-      ],
-    );
-  }
-
-  Widget _categoryView() {
-    return Expanded(
-      child: ListView.builder(
-        itemBuilder: (context, index) =>
-            _categoryItemView(_categoryDemoData[index]),
-        itemCount: _categoryDemoData.length,
       ),
     );
   }
 
-  Widget _categoryItemView(
-    Map categoryDemoData,
-  ) {
+  Widget _coursesView() {
+    return Expanded(
+      child: ListView.builder(
+        itemBuilder: (context, index) => _courseItemView(
+          image: _coursesDemoData[index]["image"],
+          name: _coursesDemoData[index]["name"],
+          state: _coursesDemoData[index]["state"],
+        ),
+        itemCount: _coursesDemoData.length,
+      ),
+    );
+  }
+
+  Widget _courseItemView(
+      {required String image, required String name, required String state}) {
     return InkWell(
-      onTap: () {
-        if (categoryDemoData["state"].toString().isEmpty) {
-          Navigator.pushNamed(context, RoutesName.subCategory,
-              arguments: {"category":categoryDemoData});
-        }
+      onTap: (){
+
       },
       child: ListTile(
         leading: ImageView(
-          url: categoryDemoData["image"],
+          url: image,
           width: AppSize.s28,
           height: AppSize.s28,
         ),
@@ -120,14 +113,14 @@ class _CategoryPageState extends State<CategoryPage>
           children: [
             Flexible(
                 child: Text(
-                  categoryDemoData["name"],
+              name,
               style: _theme.textTheme.labelMedium,
             )),
             const SizedBox(
               width: AppSize.s8,
             ),
             Text(
-              categoryDemoData["state"],
+              state,
               style: getLightStyle(
                 color: ColorManager.grey,
               ),
