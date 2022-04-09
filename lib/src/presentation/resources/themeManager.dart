@@ -71,6 +71,7 @@ ThemeData getLightTheme() {
               getMediumStyle(color: ColorManager.black, fontSize: FontSize.s14),
           subtitle2: getMediumStyle(
               color: ColorManager.primary, fontSize: FontSize.s14),
+          labelMedium: getBoldStyle(color: ColorManager.primary,fontSize: FontSize.s16),
           bodyText2: getMediumStyle(color: ColorManager.black),
           caption: getRegularStyle(
               color: ColorManager.black, fontSize: FontSize.s12),
@@ -189,7 +190,9 @@ ThemeData getDarkTheme() {
           subtitle2: getMediumStyle(
               color: ColorManager.primary, fontSize: FontSize.s14),
           bodyText2: getMediumStyle(color: ColorManager.black),
+          labelMedium: getBoldStyle(color: ColorManager.primary,fontSize: FontSize.s16),
           caption: getRegularStyle(color: ColorManager.black),
+
           bodyText1: getRegularStyle(color: ColorManager.black)),
 
       // input decoration theme (text form field)
