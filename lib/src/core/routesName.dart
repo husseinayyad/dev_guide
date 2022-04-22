@@ -8,4 +8,5 @@ class RoutesName {
   static const courses ="/courses";
   static const course ="/course";
   static const webView ="/webView";
+  static const account ="/account";
 }

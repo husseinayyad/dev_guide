@@ -1,4 +1,5 @@
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/presentation/pages/account/account.dart';
 import 'package:dev_guide/src/presentation/pages/course/course.dart';
 import 'package:dev_guide/src/presentation/pages/courses/courses.dart';
 import 'package:dev_guide/src/presentation/pages/login/login.dart';
@@ -80,6 +81,11 @@ class Routes {
         return PageRouteBuilder<dynamic>(
           pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
               WebLinkView(link:args["link"]),
+        );
+      case RoutesName.account:
+        return PageRouteBuilder<dynamic>(
+          pageBuilder: (_, Animation<double> a1, Animation<double> a2) =>
+          const AccountPage(),
         );
       default:
         return PageRouteBuilder<dynamic>(

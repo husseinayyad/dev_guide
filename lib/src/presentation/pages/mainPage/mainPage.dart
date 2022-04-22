@@ -1,5 +1,6 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
+import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/presentation/pages/category/category.dart';
 import 'package:dev_guide/src/presentation/pages/home/home.dart';
 
@@ -68,10 +69,15 @@ class _MainPageState extends State<MainPage> {
             actions: [
               Padding(
                 padding: const EdgeInsets.all(AppPadding.p8),
-                child: Icon(
-                  Icons.account_circle,
-                  size: AppSize.s40,
-                  color: ColorManager.secondary,
+                child: InkWell(
+                  onTap: (){
+                    Navigator.pushNamed(context, RoutesName.account);
+                  },
+                  child: Icon(
+                    Icons.account_circle,
+                    size: AppSize.s40,
+                    color: ColorManager.secondary,
+                  ),
                 ),
               ),
             ]),
