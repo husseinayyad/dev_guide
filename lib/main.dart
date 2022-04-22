@@ -1,5 +1,6 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/constant.dart';
+import 'package:dev_guide/src/core/helper/listOfProviders.dart';
 import 'package:dev_guide/src/core/route.dart';
 import 'package:dev_guide/src/presentation/resources/themeManager.dart';
 import 'package:flutter/material.dart';
@@ -45,38 +46,41 @@ class _MyAppState extends State<MyApp> {
   //static GlobalKey<State<StatefulWidget>> _key = GlobalKey();
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<AppCubit, AppState>(
-      bloc: AppCubit(),
+    return MultiBlocProvider(
+      providers: ListOfProviders.providers,
+      child: BlocBuilder<AppCubit, AppState>(
 
-      builder: (context, state) {
-        return MaterialApp(
-          locale: AppCubit().appLocal,
-          supportedLocales: [AppCubit().appLocal],
-          navigatorKey: Constant.navigatorKey,
-          localizationsDelegates: const [
-            AppLocalizations.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-          ],
-          debugShowCheckedModeBanner: false,
-          title: Constant.appName,
-          theme: getLightTheme(),
-          darkTheme: getDarkTheme(),
-          themeMode:
-              AppCubit.themeType == "dark" ? ThemeMode.dark : ThemeMode.light,
-          builder: (context, child) {
-            final MediaQueryData data = MediaQuery.of(context);
-            return MediaQuery(
-              data: data.copyWith(
-                textScaleFactor: 1.0,
-              ),
-              child: child!,
-            );
-          },
-          initialRoute: '/',
-          onGenerateRoute: Routes.generateRoute,
-        );
-      },
+
+        builder: (context, state) {
+          return MaterialApp(
+            locale: AppCubit().appLocal,
+            supportedLocales: [AppCubit().appLocal],
+            navigatorKey: Constant.navigatorKey,
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+            ],
+            debugShowCheckedModeBanner: false,
+            title: Constant.appName,
+            theme: getLightTheme(),
+            darkTheme: getDarkTheme(),
+            themeMode:
+                AppCubit.getThemeType == "dark" ? ThemeMode.dark : ThemeMode.light,
+            builder: (context, child) {
+              final MediaQueryData data = MediaQuery.of(context);
+              return MediaQuery(
+                data: data.copyWith(
+                  textScaleFactor: 1.0,
+                ),
+                child: child!,
+              );
+            },
+            initialRoute: '/',
+            onGenerateRoute: Routes.generateRoute,
+          );
+        },
+      ),
     );
   }
 

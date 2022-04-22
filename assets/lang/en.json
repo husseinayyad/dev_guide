@@ -68,5 +68,9 @@
   "courses": "Courses",
   "mostRecently": "Most Recently",
   "popular": "Popular",
-  "view": "View"
+  "view": "View",
+  "darkTheme": "Dark Theme",
+  "aboutUs": "About Us",
+  "helpAndSupport": "Help and Support"
+
 }

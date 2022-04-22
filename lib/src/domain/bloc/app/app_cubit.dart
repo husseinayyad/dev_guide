@@ -14,7 +14,7 @@ class AppCubit extends Cubit<AppState> {
   AppCubit() : super(AppInitial());
 
   static  Locale _appLocale = const Locale('en');
-  static String themeType = "light";
+  static String getThemeType = "light";
   Locale get appLocal => _appLocale ;
   Future<void> fetchLocale() async {
     var prefs = await SharedPreferences.getInstance();
@@ -45,7 +45,6 @@ class AppCubit extends Cubit<AppState> {
       setTheme( "light");
     }else{
 
-
       setTheme( "dark");
     }
     return;
@@ -55,7 +54,7 @@ class AppCubit extends Cubit<AppState> {
 
   void setTheme( String themeType)async {
 
-    themeType=themeType;
+    getThemeType=themeType;
     Preference.load().then((prefs) {
 
       prefs!.setString("theme", themeType);
