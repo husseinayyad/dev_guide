@@ -1,8 +1,9 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
-import 'package:dev_guide/src/presentation/resources/fontManager.dart';
+
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
 import 'package:dev_guide/src/presentation/widgets/imageView.dart';
@@ -65,9 +66,13 @@ class _CategoryPageState extends State<CategoryPage>
       "state": "Upcoming"
     }
   ];
+  late bool _isDarkMode;
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
+    _isDarkMode = AppCubit.getThemeType == "dark";
     _width = MediaQuery.of(context).size.width;
 
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -136,7 +141,7 @@ class _CategoryPageState extends State<CategoryPage>
         ),
         trailing: Icon(
           Icons.arrow_forward,
-          color: ColorManager.black,
+          color:  _isDarkMode?ColorManager.white:ColorManager.black,
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/helper/inputValidationMixin.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/login/login_bloc.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
@@ -9,6 +10,8 @@ import 'package:dev_guide/src/presentation/widgets/roundedButton.dart';
 import 'package:dev_guide/src/presentation/widgets/roundedInputField.dart';
 import 'package:dev_guide/src/presentation/widgets/roundedPasswordField.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -97,18 +100,39 @@ class _LoginPageState extends State<LoginPage> with InputValidationMixin {
                     const SizedBox(
                       height: AppSize.s20,
                     ),
-                    RoundedButton(
-                      text: AppLocalizations.of(context)!.translate("signIn")!,
-                      isLoading: false,
-                      width: AppSize.s180,
-                      press: () {
-                        if (_formGlobalKey.currentState!.validate()) {
-                          _formGlobalKey.currentState!.save();
+                    BlocConsumer<LoginBloc, LoginState>(
+                      listener: (context, state) {
+                        if (state is LoginSuccessful) {
                           Navigator.pushNamedAndRemoveUntil(
                               context, RoutesName.mainPage, (route) => false);
                         }
+                        if (state is LoginError) {
+                          Fluttertoast.showToast(
+                              msg: state.message,
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.CENTER,
+                              timeInSecForIosWeb: 1,
+                              backgroundColor: _theme.primaryColor,
+                              textColor: Colors.white,
+                              fontSize: 16.0);
+                        }
                       },
-                      color: ColorManager.primary,
+                      builder: (context, state) {
+                        return RoundedButton(
+                          text: AppLocalizations.of(context)!
+                              .translate("signIn")!,
+                          isLoading: state is LoginLoading,
+                          width: AppSize.s180,
+                          press: () {
+                            if (_formGlobalKey.currentState!.validate()) {
+                              _formGlobalKey.currentState!.save();
+                              BlocProvider.of<LoginBloc>(context).add(
+                                  LoginByEmail(email: _email,password: _password));
+                            }
+                          },
+                          color: ColorManager.primary,
+                        );
+                      },
                     ),
                     const SizedBox(
                       height: AppSize.s20,

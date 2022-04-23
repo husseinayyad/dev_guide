@@ -2,6 +2,7 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/helper/inputValidationMixin.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/signUp/sign_up_bloc.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
@@ -9,6 +10,8 @@ import 'package:dev_guide/src/presentation/widgets/roundedButton.dart';
 import 'package:dev_guide/src/presentation/widgets/roundedInputField.dart';
 import 'package:dev_guide/src/presentation/widgets/roundedPasswordField.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -20,7 +23,7 @@ class SignUpPage extends StatefulWidget {
 
 class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
   late ThemeData _theme;
-  String _email = "", _password = "",_fullName="";
+  String _email = "", _password = "", _fullName = "";
 
   late double _width, _pixelRatio;
 
@@ -64,7 +67,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                       onChanged: (value) => _fullName = value,
                       valueText: _fullName,
                       hintText:
-                      AppLocalizations.of(context)!.translate("fullName")!,
+                          AppLocalizations.of(context)!.translate("fullName")!,
                       inputType: TextInputType.text,
                       textInputAction: TextInputAction.next,
                       icon: Icons.person,
@@ -111,43 +114,70 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                         }
                       },
                     ),
-                    const SizedBox(height: AppSize.s20,),
-                    RoundedButton(
-                      text: AppLocalizations.of(context)!.translate("signUp")!,
-                      isLoading: false,
-
-                      width: AppSize.s180,
-                      press: () {
-                        if (_formGlobalKey.currentState!.validate()) {
-                          _formGlobalKey.currentState!.save();
-                          Navigator.pushNamedAndRemoveUntil(context,
-                              RoutesName.mainPage, (route) => false);
-                        }
-                      },
-                      color: ColorManager.primary,
+                    const SizedBox(
+                      height: AppSize.s20,
                     ),
-                    const SizedBox(height: AppSize.s20,),
+                    BlocConsumer<SignUpBloc, SignUpState>(
+                        listener: (context, state) {
+                      if (state is SignUpRegistered) {
+                        Navigator.pushNamedAndRemoveUntil(
+                            context, RoutesName.mainPage, (route) => false);
+                      }
+                      if (state is SignUpError) {
 
+                        Fluttertoast.showToast(
+                            msg: state.message,
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: _theme.primaryColor,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      }
+                    }, builder: (context, state) {
+                      return RoundedButton(
+                        text:
+                            AppLocalizations.of(context)!.translate("signUp")!,
+                        isLoading: state is SignUpLoading,
+                        width: AppSize.s180,
+                        press: () {
+                          if (_formGlobalKey.currentState!.validate()) {
+                            _formGlobalKey.currentState!.save();
+                            BlocProvider.of<SignUpBloc>(context).add(
+                                SignUpByEmail({
+                              "email": _email,
+                              "password": _password,
+                              "fullName": _fullName
+                            }));
+                          }
+                        },
+                        color: ColorManager.primary,
+                      );
+                    }),
+                    const SizedBox(
+                      height: AppSize.s20,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(AppLocalizations.of(context)!.translate("alreadyHaveAnAccount?")!+" ",
+                        Text(
+                          AppLocalizations.of(context)!
+                                  .translate("alreadyHaveAnAccount?")! +
+                              " ",
                           style: _theme.textTheme.headline4,
                         ),
                         InkWell(
                           onTap: () {
                             Navigator.pushNamed(context, RoutesName.login);
                           },
-                          child: Text(AppLocalizations.of(context)!.translate("signIn")!,
-                            style: TextStyle(
-                              decoration: TextDecoration.underline,
-                              color: ColorManager.primary,
-                              fontSize: FontSize.s16,
-                              fontWeight: FontWeight.bold
-                            )
-
-
-                          ),
+                          child: Text(
+                              AppLocalizations.of(context)!
+                                  .translate("signIn")!,
+                              style: TextStyle(
+                                  decoration: TextDecoration.underline,
+                                  color: ColorManager.primary,
+                                  fontSize: FontSize.s16,
+                                  fontWeight: FontWeight.bold)),
                         ),
                       ],
                     ),
@@ -188,9 +218,7 @@ class _SignUpPageState extends State<SignUpPage> with InputValidationMixin {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: InkWell(
-                        onTap: () {
-
-                        },
+                        onTap: () {},
                         child: Padding(
                           padding: const EdgeInsets.all(AppPadding.p8),
                           child: Text(

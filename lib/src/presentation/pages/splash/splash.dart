@@ -34,7 +34,7 @@ class _SplashState extends State<Splash> with SingleTickerProviderStateMixin {
   void _navigationPage() async {
     Preference.load().then((value) {
       // check if user is logged in by user Id
-      if( value!.getString(Constant.userID)!=null ) {
+      if( value!.getString(Constant.userID)!=null && value.getString(Constant.userID)!="") {
 
         Navigator.of(context)
             .pushNamedAndRemoveUntil(RoutesName.mainPage, (route) => false);

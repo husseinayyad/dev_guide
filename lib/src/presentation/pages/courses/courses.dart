@@ -1,6 +1,7 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
@@ -42,9 +43,11 @@ class _CoursesPageState extends State<CoursesPage> {
       "state": "Upcoming"
     },
   ];
+  late bool _isDarkMode;
 
   @override
   Widget build(BuildContext context) {
+    _isDarkMode = AppCubit.getThemeType == "dark";
     _width = MediaQuery.of(context).size.width;
 
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -97,26 +100,31 @@ class _CoursesPageState extends State<CoursesPage> {
     return InkWell(
       onTap: () {
         if (coursesDemoData["state"].toString().isEmpty) {
-          Navigator.pushNamed(context, RoutesName.course,
-              arguments: {"course": {
-                "name":"Flutter",
-               // "name":coursesDemoData["name"],
-                "image":"https://i.ytimg.com/vi/x0uinJvhNxI/maxresdefault.jpg",
-                "desc":"Flutter is an open source framework by Google for building beautiful, natively compiled, multi-platform applications from a single codebase",
-                 "courses":[
-                   {
-                  "name":"Build Native Mobile Apps with Flutter",
-                   "link":"https://www.udacity.com/course/build-native-mobile-apps-with-flutter--ud905",
-                   "desc":"In this course, you'll learn how to use Flutter to quickly develop high-quality, interactive mobile applications for iOS and Android devices. Whether you’re just getting started with mobile app development, or experienced with other mobile app frameworks, you’ll enjoy the high-velocity development and quality apps that Flutter enables",
-                 },
-                   {
-                     "name":"Flutter Crash Course for Beginners 2021 - Build a Flutter App with Google's Flutter & Dart",
-                     "link":"https://www.youtube.com/watch?v=x0uinJvhNxI",
-                     "desc":"Free Flutter Introduction for Beginners: Get Started with Flutter and learn how to build an iOS and Android app with Flutter!"}
-
-                 ]
-              }
-            });
+          Navigator.pushNamed(context, RoutesName.course, arguments: {
+            "course": {
+              "name": "Flutter",
+              // "name":coursesDemoData["name"],
+              "image": "https://i.ytimg.com/vi/x0uinJvhNxI/maxresdefault.jpg",
+              "desc":
+                  "Flutter is an open source framework by Google for building beautiful, natively compiled, multi-platform applications from a single codebase",
+              "courses": [
+                {
+                  "name": "Build Native Mobile Apps with Flutter",
+                  "link":
+                      "https://www.udacity.com/course/build-native-mobile-apps-with-flutter--ud905",
+                  "desc":
+                      "In this course, you'll learn how to use Flutter to quickly develop high-quality, interactive mobile applications for iOS and Android devices. Whether you’re just getting started with mobile app development, or experienced with other mobile app frameworks, you’ll enjoy the high-velocity development and quality apps that Flutter enables",
+                },
+                {
+                  "name":
+                      "Flutter Crash Course for Beginners 2021 - Build a Flutter App with Google's Flutter & Dart",
+                  "link": "https://www.youtube.com/watch?v=x0uinJvhNxI",
+                  "desc":
+                      "Free Flutter Introduction for Beginners: Get Started with Flutter and learn how to build an iOS and Android app with Flutter!"
+                }
+              ]
+            }
+          });
         }
       },
       child: ListTile(
@@ -130,7 +138,7 @@ class _CoursesPageState extends State<CoursesPage> {
           children: [
             Flexible(
                 child: Text(
-                  coursesDemoData["name"],
+              coursesDemoData["name"],
               style: _theme.textTheme.labelMedium,
             )),
             const SizedBox(
@@ -146,7 +154,7 @@ class _CoursesPageState extends State<CoursesPage> {
         ),
         trailing: Icon(
           Icons.arrow_forward,
-          color: ColorManager.black,
+          color: _isDarkMode ? ColorManager.white : ColorManager.black,
         ),
       ),
     );
