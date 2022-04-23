@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dev_guide/src/data/exception.dart';
+import 'package:dev_guide/src/domain/model/slider.dart';
 import 'package:dev_guide/src/domain/model/user.dart' as u;
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -9,6 +10,7 @@ abstract class RemoteDataSource {
   Future<u.User> signUp(Map jsonMap);
 
   Future<u.User> login(String email, password);
+  Future<List<Slider>> getSlider();
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -87,5 +89,22 @@ class RemoteDataSourceImpl implements RemoteDataSource {
       throw ServerException("");
     }
     }
+
+  @override
+  Future<List<Slider>> getSlider() async{
+    List data=[];
+    final query = await FirebaseFirestore.instance
+        .collection('slider')
+        .get().then((value) {
+          data=value.docs;
+    }).catchError((error){
+      throw ServerException(error.toString());
+    });
+    if (data.isNotEmpty) {
+      return Slider().fromMapList(data);
+    } else {
+      throw ServerException("");
+    }
+  }
 
 }
