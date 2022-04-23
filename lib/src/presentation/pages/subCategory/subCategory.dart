@@ -1,6 +1,7 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
@@ -17,8 +18,7 @@ class SubCategoryPage extends StatefulWidget {
   _SubCategoryPageState createState() => _SubCategoryPageState();
 }
 
-class _SubCategoryPageState extends State<SubCategoryPage>
-   {
+class _SubCategoryPageState extends State<SubCategoryPage> {
   late double _width, _pixelRatio;
 
   late bool _xlarge;
@@ -68,8 +68,11 @@ class _SubCategoryPageState extends State<SubCategoryPage>
     }
   ];
 
+  late bool _isDarkMode;
+
   @override
   Widget build(BuildContext context) {
+    _isDarkMode = AppCubit.getThemeType == "dark";
     _width = MediaQuery.of(context).size.width;
 
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -117,13 +120,13 @@ class _SubCategoryPageState extends State<SubCategoryPage>
   }
 
   Widget _subCategoryItemView(
-      Map subCategoryDemoData,
-      ) {
+    Map subCategoryDemoData,
+  ) {
     return InkWell(
       onTap: () {
         if (subCategoryDemoData["state"].toString().isEmpty) {
           Navigator.pushNamed(context, RoutesName.courses,
-              arguments: {"subCategory":subCategoryDemoData});
+              arguments: {"subCategory": subCategoryDemoData});
         }
       },
       child: ListTile(
@@ -137,9 +140,9 @@ class _SubCategoryPageState extends State<SubCategoryPage>
           children: [
             Flexible(
                 child: Text(
-                  subCategoryDemoData["name"],
-                  style: _theme.textTheme.labelMedium,
-                )),
+              subCategoryDemoData["name"],
+              style: _theme.textTheme.labelMedium,
+            )),
             const SizedBox(
               width: AppSize.s8,
             ),
@@ -153,11 +156,9 @@ class _SubCategoryPageState extends State<SubCategoryPage>
         ),
         trailing: Icon(
           Icons.arrow_forward,
-          color: ColorManager.black,
+          color: _isDarkMode ? ColorManager.white : ColorManager.black,
         ),
       ),
     );
   }
-
-
 }

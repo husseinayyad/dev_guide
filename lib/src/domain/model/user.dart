@@ -8,26 +8,18 @@ class User  {
 
         this.userName,
         this.userEmail,
-        this.userPhone,
+
         this.userPassword,
-        this.userAboutMe,
-        this.userCoverPhoto,
-        this.userProfilePhoto,
-        this.roleId,
-        this.status,
+
 
       });
   String? userId;
 
   String ?userName;
   String ?userEmail;
-  String ?userPhone;
+
   String ?userPassword;
-  String ?userAboutMe;
-  String ?userCoverPhoto;
-  String ?userProfilePhoto;
-  String ?roleId;
-  String? status;
+
 
 
   @override
@@ -45,17 +37,13 @@ class User  {
   User fromMap(dynamic dynamicData) {
 
     return User(
-      userId: dynamicData['user_id'],
+      userId: dynamicData['userId'],
 
-      userName: dynamicData['user_name'],
-      userEmail: dynamicData['user_email'],
-      userPhone: dynamicData['user_phone'],
-      userPassword: dynamicData['user_password'],
-      userAboutMe: dynamicData['user_about_me'],
-      userCoverPhoto: dynamicData['user_cover_photo'],
-      userProfilePhoto: dynamicData['user_profile_photo'],
-      roleId: dynamicData['role_id'],
-      status: dynamicData['status'],
+      userName: dynamicData['fullName'],
+      userEmail: dynamicData['email'],
+
+      userPassword: dynamicData['password'],
+
 
     );
 
@@ -69,13 +57,9 @@ class User  {
 
     data['user_name'] = object.userName;
     data['user_email'] = object.userEmail;
-    data['user_phone'] = object.userPhone;
+
     data['user_password'] = object.userPassword;
 
-    data['user_cover_photo'] = object.userCoverPhoto;
-    data['user_profile_photo'] = object.userProfilePhoto;
-    data['role_id'] = object.roleId;
-    data['status'] = object.status;
 
     return data;
 

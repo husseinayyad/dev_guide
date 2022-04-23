@@ -1,6 +1,7 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
 import 'package:dev_guide/src/presentation/widgets/backIcon.dart';
@@ -22,8 +23,11 @@ class _CoursePageState extends State<CoursePage> {
   late bool _xlarge;
   late ThemeData _theme;
 
+  late bool _isDarkMode;
+
   @override
   Widget build(BuildContext context) {
+    _isDarkMode = AppCubit.getThemeType == "dark";
     _width = MediaQuery.of(context).size.width;
 
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -101,7 +105,7 @@ class _CoursePageState extends State<CoursePage> {
         ),
         Padding(
           padding: const EdgeInsets.all(AppPadding.p8),
-          child: Text(widget.course["desc"]),
+          child: Text(widget.course["desc"],style: TextStyle(color: _isDarkMode?ColorManager.white:ColorManager.black),),
         ),
         _courses()
       ],
@@ -132,7 +136,8 @@ class _CoursePageState extends State<CoursePage> {
   Widget _courseView(course) {
     return InkWell(
       onTap: () {
-        Navigator.pushNamed(context, RoutesName.webView,arguments: {"link":course["link"]});
+        Navigator.pushNamed(context, RoutesName.webView,
+            arguments: {"link": course["link"]});
       },
       child: Container(
         decoration: BoxDecoration(

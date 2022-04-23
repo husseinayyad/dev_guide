@@ -1,11 +1,15 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/constant.dart';
+import 'package:dev_guide/src/core/helper/valueHolder.dart';
 import 'package:dev_guide/src/core/preference.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
+import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
+import 'package:dev_guide/src/domain/repository/appRepo.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
 import 'package:dev_guide/src/presentation/widgets/backIcon.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,21 +113,25 @@ class _AccountPageState extends State<AccountPage> {
           const SizedBox(
             height: AppSize.s40,
           ),
-          const CircleAvatar(
+          CircleAvatar(
             radius: 40,
-            child: Center(child: Text("H A")),
+            child: Center(
+                child: Text(ValueHolder.userNameToVerify!
+                    .substring(0,1)
+                    .toUpperCase())),
           ),
           const SizedBox(
             height: AppSize.s12,
           ),
           Text(
-            "hussein ayyad",
+            ValueHolder.userNameToVerify!,
             style: _theme.textTheme.headline3,
           ),
           const SizedBox(
             height: AppSize.s8,
           ),
-          Text("husseinayyad70@gmail.com", style: _theme.textTheme.headline3),
+          Text(ValueHolder.userEmailToVerify!,
+              style: _theme.textTheme.headline3),
           const SizedBox(
             height: AppSize.s12,
           ),
@@ -213,9 +221,14 @@ class _AccountPageState extends State<AccountPage> {
           const SizedBox(
             height: AppSize.s28,
           ),
-          Text(
-            AppLocalizations.of(context)!.translate("logout")!,
-            style: _theme.textTheme.headline6,
+          InkWell(
+            onTap: () {
+              _logOut();
+            },
+            child: Text(
+              AppLocalizations.of(context)!.translate("logout")!,
+              style: _theme.textTheme.headline6,
+            ),
           ),
           const SizedBox(
             height: AppSize.s28,
@@ -228,4 +241,15 @@ class _AccountPageState extends State<AccountPage> {
       ),
     );
   }
+
+
+    Future<void> _logOut() async {
+      AppRepo appRepository = AppRepo();
+      appRepository.userLogOut();
+
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushNamedAndRemoveUntil(
+          context, RoutesName.login, (route) => false);
+    }
+
 }

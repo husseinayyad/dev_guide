@@ -2,7 +2,9 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/constant.dart';
 import 'package:dev_guide/src/core/helper/listOfProviders.dart';
 import 'package:dev_guide/src/core/route.dart';
+import 'package:dev_guide/src/domain/repository/appRepo.dart';
 import 'package:dev_guide/src/presentation/resources/themeManager.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -13,7 +15,7 @@ import 'src/domain/bloc/app/app_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  //await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
   await SharedPreferences.getInstance();
 
@@ -35,10 +37,11 @@ class _MyAppState extends State<MyApp> {
   _MyAppState();
 
   late SharedPreferences prefs;
-
+  final AppRepo _appRepository = AppRepo();
   @override
   void initState() {
-    // TODO: implement initState
+    // fetch user data
+    _appRepository.getUserInfo();
 
     super.initState();
   }
