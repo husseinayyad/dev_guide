@@ -1,4 +1,5 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
+import 'package:dev_guide/src/core/helper/valueHolder.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/presentation/pages/category/category.dart';
@@ -67,11 +68,18 @@ class _MainPageState extends State<MainPage> {
             backgroundColor: _theme.scaffoldBackgroundColor,
             elevation: 0,
             actions: [
+
               Padding(
                 padding: const EdgeInsets.all(AppPadding.p8),
                 child: InkWell(
                   onTap: (){
+                    // check if user is logged in by user Id
+                    if(ValueHolder.userIdToVerify!=null && ValueHolder.userIdToVerify!=""){
                     Navigator.pushNamed(context, RoutesName.account);
+                    }
+                    else{
+                      Navigator.pushNamed(context, RoutesName.login);
+                    }
                   },
                   child: Icon(
                     Icons.account_circle,

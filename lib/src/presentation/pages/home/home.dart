@@ -1,12 +1,14 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
+import 'package:dev_guide/src/domain/bloc/sliders/slidersCubit.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
+import 'package:dev_guide/src/presentation/widgets/errorFetchData.dart';
 import 'package:dev_guide/src/presentation/widgets/imageView.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';
 import 'package:flutter_carousel_slider/carousel_slider_indicators.dart';
-import 'package:flutter_carousel_slider/carousel_slider_transforms.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -20,9 +22,16 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
 
   late bool _xlarge;
   late ThemeData _theme;
+  @override
+  void initState() {
+    // get data from server
+    BlocProvider.of<SlidersCubit>(context).getSliders();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _width = MediaQuery.of(context).size.width;
 
     _pixelRatio = MediaQuery.of(context).devicePixelRatio;
@@ -151,16 +160,28 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
   Widget _slider() {
     return SizedBox(
       height: AppSize.s130,
-      child: CarouselSlider.builder(
+      child: BlocBuilder<SlidersCubit, SlidersState>(
+  builder: (context, state) {
+    if (state is SlidersLoading){
+      return const Center(child:  CircularProgressIndicator());
+    }
+    if (state is SlidersError ){
+      return const ErrorFetchData();
+    }
+    if (state is SlidersLoaded) {
+      return  CarouselSlider.builder(
           unlimitedMode: true,
           enableAutoSlider: true,
           slideBuilder: (index) {
             return Container(
               alignment: Alignment.center,
               color: ColorManager.primary,
-              child: Text(
-                "Focusing is about saying No",
-                style: TextStyle(color: ColorManager.white),
+              child: Padding(
+                padding: const EdgeInsets.all(AppPadding.p8),
+                child: Text(
+                  state.slider[index].description!,
+                  style: TextStyle(color: ColorManager.white),
+                ),
               ),
             );
           },
@@ -170,7 +191,13 @@ class _HomePageState extends State<HomePage>  with AutomaticKeepAliveClientMixin
             padding: const EdgeInsets.only(bottom: AppPadding.p20
             ),
           ),
-          itemCount: 4),
+          itemCount:state.slider.length );
+    }
+    return const Text("");
+
+
+  },
+),
     );
   }
 
