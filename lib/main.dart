@@ -2,7 +2,7 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/constant.dart';
 import 'package:dev_guide/src/core/helper/listOfProviders.dart';
 import 'package:dev_guide/src/core/route.dart';
-import 'package:dev_guide/src/domain/repository/appRepo.dart';
+import 'package:dev_guide/src/domain/repository/app_repository.dart';
 import 'package:dev_guide/src/presentation/resources/themeManager.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';

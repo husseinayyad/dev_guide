@@ -4,8 +4,8 @@ import 'dart:convert';
 
 import 'package:bloc/bloc.dart';
 import 'package:dev_guide/src/domain/model/user.dart';
-import 'package:dev_guide/src/domain/repository/appRepo.dart';
-import 'package:dev_guide/src/domain/repository/userRepository.dart';
+import 'package:dev_guide/src/domain/repository/app_repository.dart';
+import 'package:dev_guide/src/domain/repository/user_repository.dart';
 
 import 'package:meta/meta.dart';
 

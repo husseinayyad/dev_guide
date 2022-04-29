@@ -5,8 +5,8 @@ import 'package:dartz/dartz.dart';
 import 'package:dev_guide/src/core/helper/valueHolder.dart';
 import 'package:dev_guide/src/data/failure.dart';
 import 'package:dev_guide/src/domain/model/user.dart';
-import 'package:dev_guide/src/domain/repository/appRepo.dart';
-import 'package:dev_guide/src/domain/repository/userRepository.dart';
+import 'package:dev_guide/src/domain/repository/app_repository.dart';
+import 'package:dev_guide/src/domain/repository/user_repository.dart';
 import 'package:meta/meta.dart';
 
 part 'sign_up_event.dart';

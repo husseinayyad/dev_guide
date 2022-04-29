@@ -3,12 +3,13 @@ import 'package:dev_guide/src/presentation/pages/account/account.dart';
 import 'package:dev_guide/src/presentation/pages/course/course.dart';
 import 'package:dev_guide/src/presentation/pages/courses/courses.dart';
 import 'package:dev_guide/src/presentation/pages/login/login.dart';
+import 'package:dev_guide/src/presentation/pages/main_page/mainPage.dart';
 import 'package:dev_guide/src/presentation/pages/signUp/sign_up.dart';
-import 'package:dev_guide/src/presentation/pages/subCategory/subCategory.dart';
-import 'package:dev_guide/src/presentation/pages/webView/webView.dart';
+import 'package:dev_guide/src/presentation/pages/subCategory/sub_category.dart';
+import 'package:dev_guide/src/presentation/pages/webView/web_view.dart';
 import 'package:flutter/material.dart';
 
-import '../presentation/pages/mainPage/mainPage.dart';
+
 import '../presentation/pages/splash/splash.dart';
 
 

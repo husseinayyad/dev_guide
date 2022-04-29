@@ -2,17 +2,18 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
+import 'package:dev_guide/src/domain/model/category.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
-import 'package:dev_guide/src/presentation/widgets/backIcon.dart';
-import 'package:dev_guide/src/presentation/widgets/imageView.dart';
+import 'package:dev_guide/src/presentation/widgets/back_icon.dart';
+import 'package:dev_guide/src/presentation/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 
 class SubCategoryPage extends StatefulWidget {
   const SubCategoryPage({Key? key, required this.category}) : super(key: key);
-  final Map category;
+  final Category category;
 
   @override
   _SubCategoryPageState createState() => _SubCategoryPageState();
@@ -96,7 +97,7 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
                 Padding(
                   padding: const EdgeInsets.all(AppPadding.p12),
                   child: Text(
-                    widget.category["name"],
+                    widget.category.name!,
                     style: _theme.textTheme.headline5,
                   ),
                 ),
