@@ -1,10 +1,10 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
-import 'package:dev_guide/src/domain/bloc/sliders/slidersCubit.dart';
+import 'package:dev_guide/src/domain/bloc/sliders/sliders_cubit.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
-import 'package:dev_guide/src/presentation/widgets/errorFetchData.dart';
-import 'package:dev_guide/src/presentation/widgets/imageView.dart';
+import 'package:dev_guide/src/presentation/widgets/error_fetch_data.dart';
+import 'package:dev_guide/src/presentation/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_carousel_slider/carousel_slider.dart';

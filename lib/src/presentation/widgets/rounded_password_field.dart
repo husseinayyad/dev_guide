@@ -1,5 +1,5 @@
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
-import 'package:dev_guide/src/presentation/widgets/textFieldContainer.dart';
+import 'package:dev_guide/src/presentation/widgets/text_field_container.dart';
 import 'package:flutter/material.dart';
 
 import '../resources/valuesManager.dart';

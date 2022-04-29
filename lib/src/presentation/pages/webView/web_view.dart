@@ -1,5 +1,5 @@
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
-import 'package:dev_guide/src/presentation/widgets/backIcon.dart';
+import 'package:dev_guide/src/presentation/widgets/back_icon.dart';
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 

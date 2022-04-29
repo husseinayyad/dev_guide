@@ -2,12 +2,16 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
+import 'package:dev_guide/src/domain/bloc/category/category_cubit.dart';
+import 'package:dev_guide/src/domain/model/category.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
-import 'package:dev_guide/src/presentation/widgets/imageView.dart';
+import 'package:dev_guide/src/presentation/widgets/error_fetch_data.dart';
+import 'package:dev_guide/src/presentation/widgets/image_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CategoryPage extends StatefulWidget {
   const CategoryPage({Key? key}) : super(key: key);
@@ -67,6 +71,12 @@ class _CategoryPageState extends State<CategoryPage>
     }
   ];
   late bool _isDarkMode;
+  @override
+  void initState() {
+    // get data from server
+    BlocProvider.of<CategoryCubit>(context).getCategory();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,28 +105,43 @@ class _CategoryPageState extends State<CategoryPage>
   }
 
   Widget _categoryView() {
-    return Expanded(
-      child: ListView.builder(
-        itemBuilder: (context, index) =>
-            _categoryItemView(_categoryDemoData[index]),
-        itemCount: _categoryDemoData.length,
-      ),
+    return BlocBuilder<CategoryCubit, CategoryState>(
+      builder: (context, state) {
+        if (state is CategoryLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state is CategoryError) {
+          return const Padding(
+            padding: EdgeInsets.only(top: AppPadding.p60),
+            child: ErrorFetchData(),
+          );
+        }
+        if (state is CategoryLoaded) {
+          return Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) =>
+                  _categoryItemView(state.category[index]),
+              itemCount: state.category.length,
+            ),
+          );
+        } else {
+          return const Text("");
+        }
+      },
     );
   }
 
-  Widget _categoryItemView(
-    Map categoryDemoData,
-  ) {
+  Widget _categoryItemView(Category category) {
     return InkWell(
       onTap: () {
-        if (categoryDemoData["state"].toString().isEmpty) {
+        if (category.state!.trim().isEmpty) {
           Navigator.pushNamed(context, RoutesName.subCategory,
-              arguments: {"category":categoryDemoData});
+              arguments: {"category": category});
         }
       },
       child: ListTile(
         leading: ImageView(
-          url: categoryDemoData["image"],
+          url: category.image,
           width: AppSize.s28,
           height: AppSize.s28,
         ),
@@ -125,14 +150,14 @@ class _CategoryPageState extends State<CategoryPage>
           children: [
             Flexible(
                 child: Text(
-                  categoryDemoData["name"],
+              category.name!,
               style: _theme.textTheme.labelMedium,
             )),
             const SizedBox(
               width: AppSize.s8,
             ),
             Text(
-              categoryDemoData["state"],
+              category.state!,
               style: getLightStyle(
                 color: ColorManager.grey,
               ),
@@ -141,7 +166,7 @@ class _CategoryPageState extends State<CategoryPage>
         ),
         trailing: Icon(
           Icons.arrow_forward,
-          color:  _isDarkMode?ColorManager.white:ColorManager.black,
+          color: _isDarkMode ? ColorManager.white : ColorManager.black,
         ),
       ),
     );

@@ -6,8 +6,8 @@ import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
-import 'package:dev_guide/src/presentation/widgets/backIcon.dart';
-import 'package:dev_guide/src/presentation/widgets/imageView.dart';
+import 'package:dev_guide/src/presentation/widgets/back_icon.dart';
+import 'package:dev_guide/src/presentation/widgets/image_view.dart';
 import 'package:flutter/material.dart';
 
 class CoursesPage extends StatefulWidget {

@@ -1,4 +1,4 @@
-part of 'slidersCubit.dart';
+part of 'sliders_cubit.dart';
 
 @immutable
 abstract class SlidersState {
