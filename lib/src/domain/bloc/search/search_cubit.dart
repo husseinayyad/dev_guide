@@ -5,25 +5,25 @@ import 'package:dev_guide/src/domain/model/course.dart';
 import 'package:dev_guide/src/domain/repository/courses_repository.dart';
 import 'package:equatable/equatable.dart';
 
-part 'courses_state.dart';
+part 'search_state.dart';
 
-class CoursesCubit extends Cubit<CoursesState> {
-     CoursesCubit() : super(CoursesInitial());
+class SearchCubit extends Cubit<SearchState> {
+     SearchCubit() : super(SearchInitial());
   final CoursesRepository _coursesRepository = CoursesRepository();
-  Future<void> getCourses(String subCatgId) async {
-    emit(const CoursesLoading());
-    await _coursesRepository.getCoursesList(subCatgId).then(
+  
+    Future<void> getCoursesByName(String name) async {
+    emit(const SearchLoading());
+    await _coursesRepository.getCoursesByNameList(name).then(
       (usecaseResult) async {
         usecaseResult.fold(
           (failure) {
-            emit(CoursesError(failure.message));
+            emit(SearchError(failure.message));
           },
           (category) {
-            emit(CoursesLoaded(category));
+            emit(SearchLoaded(category));
           },
         );
       },
     );
   }
- 
 }

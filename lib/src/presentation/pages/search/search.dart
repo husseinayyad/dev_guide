@@ -2,7 +2,8 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
-import 'package:dev_guide/src/domain/bloc/courses/courses_cubit.dart';
+
+import 'package:dev_guide/src/domain/bloc/search/search_cubit.dart';
 import 'package:dev_guide/src/domain/model/course.dart';
 import 'package:dev_guide/src/presentation/resources/assetsManager.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
@@ -60,24 +61,24 @@ class _SearchState extends State<Search> {
         textInputAction: TextInputAction.search,
         onFieldSubmitted: (name) {
           // get data from server
-          BlocProvider.of<CoursesCubit>(context).getCoursesByName(name);
+          BlocProvider.of<SearchCubit>(context).getCoursesByName(name);
         },
         icon: Icons.search);
   }
 
   Widget _coursesView() {
-    return BlocBuilder<CoursesCubit, CoursesState>(
+    return BlocBuilder<SearchCubit, SearchState>(
       builder: (context, state) {
-        if (state is CoursesLoading) {
+        if (state is SearchLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (state is CoursesError) {
+        if (state is SearchError) {
           return const Padding(
             padding: EdgeInsets.only(top: AppPadding.p60),
             child: ErrorFetchData(),
           );
         }
-        if (state is CoursesLoaded) {
+        if (state is SearchLoaded) {
           if (state.courses.isEmpty) {
             return Padding(
               padding: const EdgeInsets.only(top: AppPadding.p60),
