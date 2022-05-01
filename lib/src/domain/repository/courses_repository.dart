@@ -4,15 +4,15 @@ import 'package:dartz/dartz.dart';
 import 'package:dev_guide/src/data/datasources/remote_data_source.dart';
 import 'package:dev_guide/src/data/exception.dart';
 import 'package:dev_guide/src/data/failure.dart';
-import 'package:dev_guide/src/domain/model/category.dart';
-import 'package:dev_guide/src/domain/model/sub_category.dart';
+import 'package:dev_guide/src/domain/model/course.dart';
+import 'package:dev_guide/src/domain/model/slider.dart';
 
-class CategoryRepository {
+class CoursesRepository {
   final RemoteDataSourceImpl remoteDataSource = RemoteDataSourceImpl();
 
-  Future<Either<Failure, List<Category>>> getCategoryList() async {
+  Future<Either<Failure, List<Course>>> getCoursesList(String subCatgId) async {
     try {
-      final result = await remoteDataSource.getCategory();
+      final result = await remoteDataSource.getCourses(subCatgId);
       return Right(result);
     } on ServerException catch (e) {
       return Left(
@@ -26,11 +26,9 @@ class CategoryRepository {
       );
     }
   }
-
-  Future<Either<Failure, List<SubCategory>>> getSubCategoryList(
-      String catgId) async {
+    Future<Either<Failure, List<Course>>> getCoursesByNameList(String name) async {
     try {
-      final result = await remoteDataSource.getSubCategory(catgId);
+      final result = await remoteDataSource.getCoursesByName(name);
       return Right(result);
     } on ServerException catch (e) {
       return Left(

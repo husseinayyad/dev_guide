@@ -17,9 +17,10 @@ class RoundedInputField extends StatelessWidget {
   final dynamic validator;
   final ValueChanged<String>? onChanged;
   final VoidCallback? onTap;
-
+    final ValueChanged<String>? onFieldSubmitted;
   const RoundedInputField(
-      {Key? key, this.hintText,
+      {Key? key,
+      this.hintText,
       this.icon,
       this.onChanged,
       this.valueText,
@@ -29,30 +30,33 @@ class RoundedInputField extends StatelessWidget {
       this.validator,
       this.maxLines,
       this.onTap,
-      this.helperText}) : super(key: key);
+      this.helperText,
+      this.onFieldSubmitted})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Padding(
         padding: const EdgeInsets.all(AppPadding.p8),
         child: TextFieldContainer(
-
           child: TextFormField(
             textInputAction: textInputAction,
             onChanged: onChanged,
             enabled: enabled ?? true,
             validator: validator,
             onTap: onTap,
+            onFieldSubmitted:onFieldSubmitted ,
             readOnly: onTap != null,
             maxLines: maxLines,
             style: const TextStyle(color: Colors.black, fontSize: FontSize.s14),
             keyboardType: inputType ?? TextInputType.text,
             decoration: InputDecoration(
-                // suffixIcon: icon != null
-                //     ? Icon(
-                //         icon,
-                //       )
-                //     : const Text(""),
+                suffixIcon: icon != null
+                    ? Icon(
+                        icon,
+                      )
+                    : const Text(""),
+                    
 
                 // labelStyle:  TextStyle(color: Colors.black,fontSize: 11.sp),
                 //

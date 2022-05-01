@@ -4,6 +4,7 @@ import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/presentation/pages/category/category.dart';
 import 'package:dev_guide/src/presentation/pages/home/home.dart';
+import 'package:dev_guide/src/presentation/pages/search/search.dart';
 
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
@@ -25,7 +26,7 @@ class _MainPageState extends State<MainPage> {
   List<Widget> tabPages = [
     const HomePage(),
     const CategoryPage(),
-    const Scaffold(),
+    const Search(),
     const Scaffold()
   ];
   late double _width, _pixelRatio;
