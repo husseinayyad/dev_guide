@@ -73,5 +73,6 @@
   "darkTheme": "مظهر داكن",
   "aboutUs": "معلومات عنا",
   "helpAndSupport": "مساعدة و دعم",
-  "somethingsWentWrong": "حدث خطأ ما"
+  "somethingsWentWrong": "حدث خطأ ما",
+  "noResultFound":"لم يتم العثور على نتائج"
 }

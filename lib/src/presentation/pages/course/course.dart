@@ -2,6 +2,7 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
+import 'package:dev_guide/src/domain/model/course.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
 import 'package:dev_guide/src/presentation/widgets/back_icon.dart';
@@ -11,7 +12,7 @@ import 'package:flutter/material.dart';
 
 class CoursePage extends StatefulWidget {
   const CoursePage({Key? key, required this.course}) : super(key: key);
-  final Map course;
+  final Course course;
 
   @override
   _CoursePageState createState() => _CoursePageState();
@@ -52,7 +53,7 @@ class _CoursePageState extends State<CoursePage> {
                   Padding(
                     padding: const EdgeInsets.all(AppPadding.p12),
                     child: Text(
-                      widget.course["name"],
+                      widget.course.name!,
                       style: _theme.textTheme.headline5,
                     ),
                   ),
@@ -78,7 +79,7 @@ class _CoursePageState extends State<CoursePage> {
             margin: const EdgeInsets.only(
                 left: AppMargin.m40, right: AppMargin.m40),
             child: ImageView(
-              url: widget.course["image"],
+              url: widget.course.image!,
               height: AppSize.s120,
               width: _width,
             ),
@@ -105,7 +106,7 @@ class _CoursePageState extends State<CoursePage> {
         ),
         Padding(
           padding: const EdgeInsets.all(AppPadding.p8),
-          child: Text(widget.course["desc"],style: TextStyle(color: _isDarkMode?ColorManager.white:ColorManager.black),),
+          child: Text(widget.course.desc!,style: TextStyle(color: _isDarkMode?ColorManager.white:ColorManager.black),),
         ),
         _courses()
       ],
@@ -113,7 +114,7 @@ class _CoursePageState extends State<CoursePage> {
   }
 
   Widget _courses() {
-    List courses = widget.course["courses"];
+    List courses = widget.course.courses!;
     return Padding(
       padding: const EdgeInsets.all(AppPadding.p12),
       child: Column(

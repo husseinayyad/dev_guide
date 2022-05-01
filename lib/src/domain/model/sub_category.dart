@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-class Category {
+class SubCategory {
   String? id;
 
   String? name;
@@ -8,10 +8,10 @@ class Category {
   String? image;
   String? state;
   String? catgId;
-  Category({this.id, this.name, this.image, this.state, this.catgId});
+  SubCategory({this.id, this.name, this.image, this.state, this.catgId});
 
   @override
-  bool operator ==(dynamic other) => other is Category && id == other.id;
+  bool operator ==(dynamic other) => other is SubCategory && id == other.id;
 
   @override
   int get hashCode {
@@ -22,16 +22,16 @@ class Category {
     return id;
   }
 
-  Category fromMap(dynamic dynamicData) {
-    return Category(
+  SubCategory fromMap(dynamic dynamicData) {
+    return SubCategory(
         id: dynamicData['id'],
         name: dynamicData['name'],
         image: dynamicData['image'],
         state: dynamicData['state'],
-        );
+        catgId: dynamicData['catgId']);
   }
 
-  Map<String, dynamic> toMap(Category object) {
+  Map<String, dynamic> toMap(SubCategory object) {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = object.id;
 
@@ -43,8 +43,8 @@ class Category {
     return data;
   }
 
-  List<Category> fromMapList(List<dynamic> dynamicDataList) {
-    final List<Category> sliderList = <Category>[];
+  List<SubCategory> fromMapList(List<dynamic> dynamicDataList) {
+    final List<SubCategory> sliderList = <SubCategory>[];
 
     for (dynamic dynamicData in dynamicDataList) {
       if (dynamicData != null) {
@@ -54,9 +54,9 @@ class Category {
     return sliderList;
   }
 
-  List<Map<String, dynamic>> toMapList(List<Category> objectList) {
+  List<Map<String, dynamic>> toMapList(List<SubCategory> objectList) {
     final List<Map<String, dynamic>> mapList = <Map<String, dynamic>>[];
-    for (Category data in objectList) {
+    for (SubCategory data in objectList) {
       mapList.add(toMap(data));
     }
 

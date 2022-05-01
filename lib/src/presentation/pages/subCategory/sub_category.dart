@@ -2,14 +2,18 @@ import 'package:dev_guide/src/core/appLocalizations.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
+import 'package:dev_guide/src/domain/bloc/sub_category/sub_category_cubit.dart';
 import 'package:dev_guide/src/domain/model/category.dart';
+import 'package:dev_guide/src/domain/model/sub_category.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
 import 'package:dev_guide/src/presentation/widgets/back_icon.dart';
+import 'package:dev_guide/src/presentation/widgets/error_fetch_data.dart';
 import 'package:dev_guide/src/presentation/widgets/image_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SubCategoryPage extends StatefulWidget {
   const SubCategoryPage({Key? key, required this.category}) : super(key: key);
@@ -70,6 +74,13 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
   ];
 
   late bool _isDarkMode;
+  @override
+  void initState() {
+    // get data from server
+    BlocProvider.of<SubCategoryCubit>(context)
+        .getSubCategory(widget.category.id!);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -111,28 +122,45 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
   }
 
   Widget _subCategoryView() {
-    return Expanded(
-      child: ListView.builder(
-        itemBuilder: (context, index) =>
-            _subCategoryItemView(_subCategoryDemoData[index]),
-        itemCount: _subCategoryDemoData.length,
-      ),
+    return BlocBuilder<SubCategoryCubit, SubCategoryState>(
+      builder: (context, state) {
+        if (state is SubCategoryLoading) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (state is SubCategoryError) {
+          return const Padding(
+            padding: EdgeInsets.only(top: AppPadding.p60),
+            child: ErrorFetchData(),
+          );
+        }
+        if (state is SubCategoryLoaded) {
+          return Expanded(
+            child: ListView.builder(
+              itemBuilder: (context, index) =>
+                  _subCategoryItemView(state.category[index]),
+              itemCount: state.category.length,
+            ),
+          );
+        } else {
+          return const Text("");
+        }
+      },
     );
   }
 
   Widget _subCategoryItemView(
-    Map subCategoryDemoData,
+    SubCategory subCategory,
   ) {
     return InkWell(
       onTap: () {
-        if (subCategoryDemoData["state"].toString().isEmpty) {
+        if (subCategory.state!.trim().isEmpty) {
           Navigator.pushNamed(context, RoutesName.courses,
-              arguments: {"subCategory": subCategoryDemoData});
+              arguments: {"subCategory": subCategory});
         }
       },
       child: ListTile(
         leading: ImageView(
-          url: subCategoryDemoData["image"],
+          url: subCategory.image!,
           width: AppSize.s28,
           height: AppSize.s28,
         ),
@@ -141,14 +169,14 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
           children: [
             Flexible(
                 child: Text(
-              subCategoryDemoData["name"],
+              subCategory.name!,
               style: _theme.textTheme.labelMedium,
             )),
             const SizedBox(
               width: AppSize.s8,
             ),
             Text(
-              subCategoryDemoData["state"],
+              subCategory.state!,
               style: getLightStyle(
                 color: ColorManager.grey,
               ),

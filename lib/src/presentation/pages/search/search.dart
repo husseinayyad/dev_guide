@@ -4,55 +4,33 @@ import 'package:dev_guide/src/core/routesName.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/courses/courses_cubit.dart';
 import 'package:dev_guide/src/domain/model/course.dart';
-import 'package:dev_guide/src/domain/model/sub_category.dart';
+import 'package:dev_guide/src/presentation/resources/assetsManager.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
-import 'package:dev_guide/src/presentation/resources/fontManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
 import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
-import 'package:dev_guide/src/presentation/widgets/back_icon.dart';
 import 'package:dev_guide/src/presentation/widgets/error_fetch_data.dart';
 import 'package:dev_guide/src/presentation/widgets/image_view.dart';
+import 'package:dev_guide/src/presentation/widgets/no_results_found.dart';
+import 'package:dev_guide/src/presentation/widgets/roundedInputField.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class CoursesPage extends StatefulWidget {
-  const CoursesPage({Key? key, required this.subCategory}) : super(key: key);
-  final SubCategory subCategory;
+class Search extends StatefulWidget {
+  const Search({Key? key}) : super(key: key);
 
   @override
-  _CoursesPageState createState() => _CoursesPageState();
+  State<Search> createState() => _SearchState();
 }
 
-class _CoursesPageState extends State<CoursesPage> {
+class _SearchState extends State<Search> {
+  late bool _isDarkMode;
   late double _width, _pixelRatio;
 
   late bool _xlarge;
   late ThemeData _theme;
-  final List<Map> _coursesDemoData = [
-    {
-      "name": "Html",
-      "image":
-          "https://cdn.icon-icons.com/icons2/2110/PNG/512/development_icon_131032.png",
-      "state": ""
-    },
-    {
-      "name": "CSS",
-      "image":
-          "https://cdn.icon-icons.com/icons2/1859/PNG/512/codinghtml_117947.png",
-      "state": ""
-    },
-    {
-      "name": "Vue Js",
-      "image":
-          "https://cdn.icon-icons.com/icons2/664/PNG/512/construction_project_plan_building_architect_design_develop-62_icon-icons.com_60212.png",
-      "state": "Upcoming"
-    },
-  ];
-  late bool _isDarkMode;
   @override
   void initState() {
-    // get data from server
-    BlocProvider.of<CoursesCubit>(context).getCourses(widget.subCategory.id!);
     super.initState();
   }
 
@@ -66,37 +44,29 @@ class _CoursesPageState extends State<CoursesPage> {
     _xlarge = ResponsiveWidget.isScreenXLarge(_width, _pixelRatio);
     _theme = Theme.of(context);
     return Scaffold(
-      body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
-              height: AppSize.s16,
-            ),
-            Row(
-              children: [
-                const Padding(
-                  padding: EdgeInsets.all(AppPadding.p8),
-                  child: BackIcon(),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(AppPadding.p12),
-                  child: Text(
-                    widget.subCategory.name!,
-                    style: _theme.textTheme.headline5,
-                  ),
-                ),
-              ],
-            ),
-            _coursesView()
-          ],
+      body: Column(children: [
+        _search(),
+        const SizedBox(
+          height: AppSize.s12,
         ),
-      ),
+        _coursesView()
+      ]),
     );
   }
 
+  Widget _search() {
+    return RoundedInputField(
+        hintText: AppLocalizations.of(context)!.translate("search"),
+        textInputAction: TextInputAction.search,
+        onFieldSubmitted: (name) {
+          // get data from server
+          BlocProvider.of<CoursesCubit>(context).getCoursesByName(name);
+        },
+        icon: Icons.search);
+  }
+
   Widget _coursesView() {
-  return BlocBuilder<CoursesCubit, CoursesState>(
+    return BlocBuilder<CoursesCubit, CoursesState>(
       builder: (context, state) {
         if (state is CoursesLoading) {
           return const Center(child: CircularProgressIndicator());
@@ -108,6 +78,15 @@ class _CoursesPageState extends State<CoursesPage> {
           );
         }
         if (state is CoursesLoaded) {
+          if (state.courses.isEmpty) {
+            return Padding(
+              padding: const EdgeInsets.only(top: AppPadding.p60),
+              child: NoResultsFound(
+                  text:
+                      AppLocalizations.of(context)!.translate("noResultFound")!,
+                  icon: FontAwesomeIcons.sadCry),
+            );
+          }
           return Expanded(
             child: ListView.builder(
               itemBuilder: (context, index) =>
@@ -116,12 +95,14 @@ class _CoursesPageState extends State<CoursesPage> {
             ),
           );
         } else {
-          return const Text("");
+          return Padding(
+            padding: const EdgeInsets.only(top: AppPadding.p60),
+            child: Image.asset(ImageAssets.searchLogo),
+          );
         }
       },
     );
   }
-
 
   Widget _courseItemView(
     Course course,
@@ -129,9 +110,8 @@ class _CoursesPageState extends State<CoursesPage> {
     return InkWell(
       onTap: () {
         if (course.state!.trim().isEmpty) {
-          Navigator.pushNamed(context, RoutesName.course, arguments: {
-            "course":course
-          });
+          Navigator.pushNamed(context, RoutesName.course,
+              arguments: {"course": course});
         }
       },
       child: ListTile(
