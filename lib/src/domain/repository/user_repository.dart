@@ -67,5 +67,30 @@ class UserRepository {
       }
   }
 
+   Future<Either<Failure, void>> favAction( bool add,
+       String id,List favList) async {
 
+
+     try {
+       final result = await remoteDataSource.favAction(add, id,favList);
+       return Right(
+           result
+       );
+     } on ServerException  catch(e) {
+
+
+       return  Left(
+         ServerFailure(
+             e.msg
+         ),
+       );
+
+     } on SocketException {
+       return const Left(
+         ConnectionFailure(
+           'Failed to connect to the network',
+         ),
+       );
+     }
+   }
 }

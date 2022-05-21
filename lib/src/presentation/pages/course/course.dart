@@ -1,6 +1,8 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
+import 'package:dev_guide/src/core/helper/valueHolder.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/FavAction/fav_action_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
 import 'package:dev_guide/src/domain/model/course.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
@@ -9,6 +11,8 @@ import 'package:dev_guide/src/presentation/widgets/back_icon.dart';
 import 'package:dev_guide/src/presentation/widgets/image_view.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class CoursePage extends StatefulWidget {
   const CoursePage({Key? key, required this.course}) : super(key: key);
@@ -97,16 +101,63 @@ class _CoursePageState extends State<CoursePage> {
                 AppLocalizations.of(context)!.translate("description")!,
                 style: _theme.textTheme.headline3,
               ),
-              Icon(
-                Icons.favorite,
-                color: ColorManager.error,
+              BlocBuilder<FavActionCubit, FavActionState>(
+                builder: (context, state) {
+                  return InkWell(
+                    splashColor: Colors.transparent,
+                    highlightColor: Colors.transparent,
+                    onTap: () {
+                      BlocProvider.of<FavActionCubit>(context)
+                          .favAction(
+                              !widget.course.favList!
+                                  .contains(ValueHolder.userIdToVerify),
+                              widget.course.id!,
+                              widget.course.favList!)
+                          .whenComplete(() {
+                        Fluttertoast.showToast(
+                            msg: widget.course.favList!
+                                    .contains(ValueHolder.userIdToVerify)
+                                ? AppLocalizations.of(context)!
+                                    .translate("addedToFavorites")!
+                                : AppLocalizations.of(context)!
+                                    .translate("removedFromFavorites")!,
+                            toastLength: Toast.LENGTH_SHORT,
+                            gravity: ToastGravity.CENTER,
+                            timeInSecForIosWeb: 1,
+                            backgroundColor: _theme.primaryColor,
+                            textColor: Colors.white,
+                            fontSize: 16.0);
+                      });
+                    },
+                    child: state is FavActionLoading
+                        ? const Center(
+                            child: Padding(
+                            padding: EdgeInsets.all(AppPadding.p8),
+                            child: SizedBox(
+                                height: AppSize.s20,
+                                width: AppSize.s20,
+                                child: CircularProgressIndicator()),
+                          ))
+                        : Icon(
+                            widget.course.favList!
+                                    .contains(ValueHolder.userIdToVerify)
+                                ? Icons.favorite
+                                : Icons.favorite_border,
+                            color: ColorManager.error,
+                          ),
+                  );
+                },
               )
             ],
           ),
         ),
         Padding(
           padding: const EdgeInsets.all(AppPadding.p8),
-          child: Text(widget.course.desc!,style: TextStyle(color: _isDarkMode?ColorManager.white:ColorManager.black),),
+          child: Text(
+            widget.course.desc!,
+            style: TextStyle(
+                color: _isDarkMode ? ColorManager.white : ColorManager.black),
+          ),
         ),
         _courses()
       ],

@@ -73,6 +73,8 @@
   "aboutUs": "About Us",
   "helpAndSupport": "Help and Support",
   "somethingsWentWrong": "Somethings Went Wrong",
-  "noResultFound":"No Result Found"
+  "noResultFound":"No Result Found",
+  "addedToFavorites": "added to favorites",
+  "removedFromFavorites": "removed from favourites"
 
 }

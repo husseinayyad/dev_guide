@@ -1,5 +1,7 @@
+import 'package:dev_guide/src/domain/bloc/FavAction/fav_action_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/category/category_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/courses/courses_cubit.dart';
+import 'package:dev_guide/src/domain/bloc/favorites/favorites_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/login/login_bloc.dart';
 import 'package:dev_guide/src/domain/bloc/search/search_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/signUp/sign_up_bloc.dart';
@@ -21,5 +23,7 @@ class ListOfProviders {
     BlocProvider<SubCategoryCubit>(create: (BuildContext context) => SubCategoryCubit()),
     BlocProvider<CoursesCubit>(create: (BuildContext context) => CoursesCubit()),
      BlocProvider<SearchCubit>(create: (BuildContext context) => SearchCubit()),
+    BlocProvider<FavActionCubit>(create: (BuildContext context) => FavActionCubit()),
+    BlocProvider<FavoritesCubit>(create: (BuildContext context) => FavoritesCubit()),
   ];
 }

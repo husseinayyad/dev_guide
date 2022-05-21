@@ -66,7 +66,7 @@ class _AccountPageState extends State<AccountPage> {
                 Padding(
                   padding: const EdgeInsets.all(AppPadding.p12),
                   child: Text(
-                    "hussein",
+                    ValueHolder.userNameToVerify!,
                     style: _theme.textTheme.headline5,
                   ),
                 ),

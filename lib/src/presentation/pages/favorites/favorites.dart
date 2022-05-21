@@ -1,9 +1,11 @@
 import 'package:dev_guide/src/core/appLocalizations.dart';
+import 'package:dev_guide/src/core/helper/valueHolder.dart';
 import 'package:dev_guide/src/core/responsiveUi.dart';
 import 'package:dev_guide/src/core/routesName.dart';
+import 'package:dev_guide/src/domain/bloc/FavAction/fav_action_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
+import 'package:dev_guide/src/domain/bloc/favorites/favorites_cubit.dart';
 
-import 'package:dev_guide/src/domain/bloc/search/search_cubit.dart';
 import 'package:dev_guide/src/domain/model/course.dart';
 import 'package:dev_guide/src/presentation/resources/assetsManager.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
@@ -12,79 +14,99 @@ import 'package:dev_guide/src/presentation/resources/valuesManager.dart';
 import 'package:dev_guide/src/presentation/widgets/error_fetch_data.dart';
 import 'package:dev_guide/src/presentation/widgets/image_view.dart';
 import 'package:dev_guide/src/presentation/widgets/no_results_found.dart';
-import 'package:dev_guide/src/presentation/widgets/roundedInputField.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class SearchPage extends StatefulWidget {
-  const SearchPage({Key? key}) : super(key: key);
+class FavoritesPage extends StatefulWidget {
+  const FavoritesPage({Key? key}) : super(key: key);
 
   @override
-  State<SearchPage> createState() => _SearchPageState();
+  State<FavoritesPage> createState() => _FavoritesPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _FavoritesPageState extends State<FavoritesPage>     with AutomaticKeepAliveClientMixin {
   late bool _isDarkMode;
   late double _width, _pixelRatio;
 
   late bool _xlarge;
   late ThemeData _theme;
+
   @override
   void initState() {
+    // get data from server
+    BlocProvider.of<FavoritesCubit>(context)
+        .getFavCourses(ValueHolder.userIdToVerify!);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     _isDarkMode = AppCubit.getThemeType == "dark";
-    _width = MediaQuery.of(context).size.width;
+    _width = MediaQuery
+        .of(context)
+        .size
+        .width;
 
-    _pixelRatio = MediaQuery.of(context).devicePixelRatio;
+    _pixelRatio = MediaQuery
+        .of(context)
+        .devicePixelRatio;
 
     _xlarge = ResponsiveWidget.isScreenXLarge(_width, _pixelRatio);
     _theme = Theme.of(context);
     return Scaffold(
-      body: Column(children: [
-        _search(),
-        const SizedBox(
-          height: AppSize.s12,
-        ),
-        _coursesView()
-      ]),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(AppPadding.p8),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+
+                Text(
+                  AppLocalizations.of(context)!.translate("favorites")!,
+                  style: _theme.textTheme.headline3,
+                ),
+                const SizedBox(
+                  width: AppSize.s8,
+                ),
+                const Icon(Icons.favorite)
+              ],
+            ),
+          ),
+          BlocBuilder<FavActionCubit, FavActionState>(
+            builder: (context, state) {
+              // get data from server
+              BlocProvider.of<FavoritesCubit>(context)
+                  .getFavCourses(ValueHolder.userIdToVerify!);
+              return _coursesView();
+            },
+          ),
+        ],
+      ),
     );
   }
 
-  Widget _search() {
-    return RoundedInputField(
-        hintText: AppLocalizations.of(context)!.translate("search"),
-        textInputAction: TextInputAction.search,
-        onFieldSubmitted: (name) {
-          // get data from server
-          BlocProvider.of<SearchCubit>(context).getCoursesByName(name);
-        },
-        icon: Icons.search);
-  }
-
   Widget _coursesView() {
-    return BlocBuilder<SearchCubit, SearchState>(
+    return BlocBuilder<FavoritesCubit, FavoritesState>(
       builder: (context, state) {
-        if (state is SearchLoading) {
+        if (state is FavoritesLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-        if (state is SearchError) {
+        if (state is FavoritesError) {
           return const Padding(
             padding: EdgeInsets.only(top: AppPadding.p60),
             child: ErrorFetchData(),
           );
         }
-        if (state is SearchLoaded) {
+        if (state is FavoritesLoaded) {
           if (state.courses.isEmpty) {
             return Padding(
-              padding: const EdgeInsets.only(top: AppPadding.p60),
+              padding: const EdgeInsets.only(top: AppSize.s130),
               child: NoResultsFound(
                   text:
-                      AppLocalizations.of(context)!.translate("noResultFound")!,
+                  AppLocalizations.of(context)!.translate("noResultFound")!,
                   icon: FontAwesomeIcons.sadCry),
             );
           }
@@ -105,9 +127,7 @@ class _SearchPageState extends State<SearchPage> {
     );
   }
 
-  Widget _courseItemView(
-    Course course,
-  ) {
+  Widget _courseItemView(Course course,) {
     return InkWell(
       onTap: () {
         if (course.state!.trim().isEmpty) {
@@ -126,9 +146,9 @@ class _SearchPageState extends State<SearchPage> {
           children: [
             Flexible(
                 child: Text(
-              course.name!,
-              style: _theme.textTheme.labelMedium,
-            )),
+                  course.name!,
+                  style: _theme.textTheme.labelMedium,
+                )),
             const SizedBox(
               width: AppSize.s8,
             ),
@@ -147,4 +167,8 @@ class _SearchPageState extends State<SearchPage> {
       ),
     );
   }
+
+  @override
+  // TODO: implement wantKeepAlive
+  bool get wantKeepAlive => true;
 }
