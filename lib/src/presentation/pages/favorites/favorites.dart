@@ -7,6 +7,7 @@ import 'package:dev_guide/src/domain/bloc/app/app_cubit.dart';
 import 'package:dev_guide/src/domain/bloc/favorites/favorites_cubit.dart';
 
 import 'package:dev_guide/src/domain/model/course.dart';
+import 'package:dev_guide/src/presentation/pages/login/login.dart';
 import 'package:dev_guide/src/presentation/resources/assetsManager.dart';
 import 'package:dev_guide/src/presentation/resources/colorManager.dart';
 import 'package:dev_guide/src/presentation/resources/stylesManager.dart';
@@ -43,6 +44,7 @@ class _FavoritesPageState extends State<FavoritesPage>     with AutomaticKeepAli
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     _isDarkMode = AppCubit.getThemeType == "dark";
     _width = MediaQuery
         .of(context)
@@ -56,9 +58,17 @@ class _FavoritesPageState extends State<FavoritesPage>     with AutomaticKeepAli
     _xlarge = ResponsiveWidget.isScreenXLarge(_width, _pixelRatio);
     _theme = Theme.of(context);
     return Scaffold(
-      body: Column(
-        children: [
-          Padding(
+      body: ValueHolder.userIdToVerify!.isEmpty?Padding(
+        padding: const EdgeInsets.all(AppPadding.p8),
+        child: Center(
+          child: Text(AppLocalizations.of(context)!.translate("loginToViewCourses")!
+            , style: _theme.textTheme.headline3,
+          textAlign: TextAlign.center,
+          maxLines: 2,),
+        ),
+      ):Column(
+        children:  [
+           Padding(
             padding: const EdgeInsets.all(AppPadding.p8),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,

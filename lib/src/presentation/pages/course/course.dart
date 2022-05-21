@@ -101,6 +101,7 @@ class _CoursePageState extends State<CoursePage> {
                 AppLocalizations.of(context)!.translate("description")!,
                 style: _theme.textTheme.headline3,
               ),
+              if(ValueHolder.userIdToVerify!.isNotEmpty)
               BlocBuilder<FavActionCubit, FavActionState>(
                 builder: (context, state) {
                   return InkWell(

@@ -75,6 +75,7 @@
   "somethingsWentWrong": "Somethings Went Wrong",
   "noResultFound":"No Result Found",
   "addedToFavorites": "added to favorites",
-  "removedFromFavorites": "removed from favourites"
+  "removedFromFavorites": "removed from favourites",
+  "loginToViewCourses": "please log in to view your favorites courses"
 
 }
