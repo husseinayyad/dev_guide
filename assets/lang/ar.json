@@ -74,5 +74,8 @@
   "aboutUs": "معلومات عنا",
   "helpAndSupport": "مساعدة و دعم",
   "somethingsWentWrong": "حدث خطأ ما",
-  "noResultFound":"لم يتم العثور على نتائج"
+  "noResultFound":"لم يتم العثور على نتائج",
+  "addedToFavorites": "أضيفت إلى المفضلة",
+  "removedFromFavorites": "تمت إزالتها من المفضلة",
+  "loginToViewCourses": "الرجاء تسجيل الدخول لعرض الدورات المفضلة لديك"
 }

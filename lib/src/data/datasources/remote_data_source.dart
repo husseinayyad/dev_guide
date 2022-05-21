@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:dev_guide/src/core/helper/valueHolder.dart';
 import 'package:dev_guide/src/data/exception.dart';
 import 'package:dev_guide/src/domain/model/category.dart';
 import 'package:dev_guide/src/domain/model/course.dart';
@@ -13,11 +14,18 @@ abstract class RemoteDataSource {
   Future<u.User> signUp(Map jsonMap);
 
   Future<u.User> login(String email, password);
+
   Future<List<Slider>> getSlider();
+
   Future<List<Category>> getCategory();
+
   Future<List<SubCategory>> getSubCategory(String catgId);
+
   Future<List<Course>> getCourses(String subCatgId);
+
   Future<List<Course>> getCoursesByName(String name);
+  Future<List<Course>> getFavCourses(String userId);
+  Future<void> favAction(bool add, String id, List favList);
 }
 
 class RemoteDataSourceImpl implements RemoteDataSource {
@@ -178,6 +186,41 @@ class RemoteDataSourceImpl implements RemoteDataSource {
               .toString()
               .toLowerCase()
               .contains(name.toLowerCase()))
+          .toList());
+    } else {
+      throw ServerException("");
+    }
+  }
+
+  @override
+  Future<void> favAction(bool add, String id, List favList) async {
+    if (add) {
+      favList.add(ValueHolder.userIdToVerify!);
+    } else {
+      favList.removeWhere((element) => element == ValueHolder.userIdToVerify!);
+    }
+    await FirebaseFirestore.instance
+        .collection('courses')
+        .doc(id)
+        .update({"favList": favList}).then((value) => print("done")).catchError((error) {
+          print(error);
+      throw ServerException(error.toString());
+    });
+  }
+
+  @override
+  Future<List<Course>> getFavCourses(String userId) async {
+    List data = [];
+    await FirebaseFirestore.instance.collection('courses').get().then((value) {
+      data = value.docs;
+    }).catchError((error) {
+      throw ServerException(error.toString());
+    });
+    if (data.isNotEmpty) {
+      return Course().fromMapList(data
+          .where((element) => element["favList"]
+
+          .contains(userId))
           .toList());
     } else {
       throw ServerException("");

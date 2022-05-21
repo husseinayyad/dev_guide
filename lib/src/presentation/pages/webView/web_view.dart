@@ -23,6 +23,7 @@ class WebLinkView extends StatelessWidget {
 
               child: WebView(
                 initialUrl: link,
+                javascriptMode: JavascriptMode.unrestricted,
               ),
             ),
           ],

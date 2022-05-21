@@ -42,4 +42,20 @@ class CoursesRepository {
       );
     }
   }
+  Future<Either<Failure, List<Course>>> getFavCourses(String userId) async {
+    try {
+      final result = await remoteDataSource.getFavCourses(userId);
+      return Right(result);
+    } on ServerException catch (e) {
+      return Left(
+        ServerFailure(e.msg),
+      );
+    } on SocketException {
+      return const Left(
+        ConnectionFailure(
+          'Failed to connect to the network',
+        ),
+      );
+    }
+  }
 }

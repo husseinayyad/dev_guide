@@ -13,6 +13,8 @@ class Course {
   String? catgId;
   String? subCatgId;
   String? state;
+  List<dynamic>? favList;
+
   Course(
       {this.id,
       this.name,
@@ -21,7 +23,8 @@ class Course {
       this.courses,
       this.catgId,
       this.subCatgId,
-      this.state});
+      this.state,
+      this.favList});
 
   @override
   bool operator ==(dynamic other) => other is Course && id == other.id;
@@ -44,7 +47,8 @@ class Course {
         courses: dynamicData['courses'],
         catgId: dynamicData['catgId'],
         subCatgId: dynamicData['subCatgId'],
-        state: dynamicData['state']);
+        state: dynamicData['state'],
+        favList: dynamicData['favList']);
   }
 
   Map<String, dynamic> toMap(Course object) {
@@ -59,6 +63,7 @@ class Course {
     data['catgId'] = object.catgId;
     data['subCatgId'] = object.subCatgId;
     data['state'] = object.state;
+    data['favList']=object.favList;
     return data;
   }
 
